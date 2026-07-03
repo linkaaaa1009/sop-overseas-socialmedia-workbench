@@ -1,0 +1,2459 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes" />
+    <title>社媒运营 SOP 工作台 · 完整版</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* ========== CSS 变量 & 重置 ========== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg: #f4f6fa; --card: #ffffff; --primary: #4f46e5;
+            --primary-light: #818cf8; --primary-dark: #3730a3;
+            --text: #1e293b; --text-light: #64748b; --border: #e2e8f0;
+            --radius: 16px; --radius-sm: 10px; --shadow: 0 4px 24px rgba(0,0,0,0.05);
+            --success: #10b981; --warning: #f59e0b; --danger: #ef4444;
+            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 12px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .app {
+            max-width: 1120px;
+            width: 100%;
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.06);
+            padding: 18px 22px 28px;
+            position: relative;
+        }
+
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border);
+        }
+        .logo {
+            font-weight: 700;
+            font-size: 20px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .logo i { font-size: 22px; }
+        .header-actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+        .header-actions button {
+            padding: 6px 14px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            background: white;
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            min-height: 36px;
+            min-width: 44px;
+            justify-content: center;
+        }
+        .header-actions button:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.15);
+        }
+        .header-actions button.danger:hover {
+            background: var(--danger);
+            border-color: var(--danger);
+        }
+
+        .progress-bar {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+        }
+        .progress-step {
+            flex: 1;
+            min-width: 52px;
+            text-align: center;
+            padding: 8px 4px;
+            border-radius: 30px;
+            font-size: 11px;
+            font-weight: 600;
+            background: #f1f4f9;
+            color: var(--text-light);
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            min-height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+        .progress-step i { font-size: 12px; }
+        .progress-step.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.2);
+            transform: scale(1.02);
+        }
+        .progress-step.done {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .progress-step:hover:not(.active) {
+            background: #e2e8f0;
+        }
+
+        .panel {
+            display: none;
+            animation: fadeUp 0.3s ease;
+        }
+        .panel.active {
+            display: block;
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .panel-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .panel-desc {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+
+        .card {
+            background: #fafcff;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 16px 18px;
+            margin-bottom: 12px;
+            transition: var(--transition);
+        }
+        .card:hover {
+            border-color: #d1d9e6;
+        }
+        .card-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .card-title i {
+            color: var(--primary);
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            font-family: inherit;
+            outline: none;
+            transition: var(--transition);
+            background: white;
+            min-height: 44px;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+        }
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 520px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .btn {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 44px;
+            min-width: 44px;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+        .btn:active {
+            transform: scale(0.96);
+        }
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.2);
+        }
+        .btn-secondary {
+            background: #e2e8f0;
+            color: var(--text);
+        }
+        .btn-secondary:hover {
+            background: #cbd5e1;
+        }
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.2);
+        }
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: 12px;
+            min-height: 34px;
+        }
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .tag-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .tag-btn {
+            padding: 6px 16px;
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            background: white;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            min-height: 36px;
+            touch-action: manipulation;
+        }
+        .tag-btn:hover {
+            border-color: var(--primary);
+        }
+        .tag-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            box-shadow: 0 2px 12px rgba(79, 70, 229, 0.15);
+        }
+
+        .score-bar-wrap {
+            margin: 4px 0;
+        }
+        .score-bar-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+        }
+        .score-bar-track {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .score-bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            background: var(--primary);
+        }
+        .score-bar-fill.low {
+            background: var(--danger);
+        }
+        .score-bar-fill.mid {
+            background: var(--warning);
+        }
+        .score-bar-fill.high {
+            background: var(--success);
+        }
+
+        .asset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 10px;
+        }
+        .asset-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            text-align: center;
+            transition: var(--transition);
+            cursor: pointer;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .asset-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        }
+        .asset-card .icon {
+            font-size: 28px;
+            color: var(--primary-light);
+        }
+        .asset-card .name {
+            font-weight: 600;
+            font-size: 13px;
+            margin: 4px 0 2px;
+            word-break: break-word;
+        }
+        .asset-card .meta {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .archive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            max-height: 380px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .archive-item {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+        .archive-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+        }
+        .archive-item .head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .archive-item .platform {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        .archive-item .date {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+        .archive-item .text {
+            font-size: 13px;
+            margin: 6px 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .archive-item .stats {
+            display: flex;
+            gap: 12px;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+        .archive-item .stats span {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .stats-dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .stat-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            text-align: center;
+            transition: var(--transition);
+        }
+        .stat-card:hover {
+            border-color: var(--primary-light);
+        }
+        .stat-card .num {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .stat-card .label {
+            font-size: 11px;
+            color: var(--text-light);
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-light);
+            padding: 24px 0;
+        }
+        .empty-state i {
+            font-size: 36px;
+            color: var(--border);
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            font-size: 22px;
+            box-shadow: 0 8px 32px rgba(79, 70, 229, 0.3);
+            cursor: pointer;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+            touch-action: manipulation;
+        }
+        .sidebar-toggle:hover {
+            transform: scale(1.06);
+        }
+        .sidebar-toggle:active {
+            transform: scale(0.92);
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 200;
+            display: none;
+            backdrop-filter: blur(2px);
+        }
+        .sidebar-overlay.open {
+            display: block;
+        }
+
+        .sidebar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 75vh;
+            max-height: 600px;
+            background: white;
+            z-index: 300;
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.08);
+            transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            transform: translateY(100%);
+            padding: 16px 20px 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .sidebar.open {
+            transform: translateY(0);
+        }
+        .sidebar .handle {
+            width: 40px;
+            height: 4px;
+            background: #d1d9e6;
+            border-radius: 4px;
+            align-self: center;
+            margin-bottom: 12px;
+            flex-shrink: 0;
+        }
+        .sidebar .close-btn {
+            align-self: flex-end;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--text-light);
+            padding: 4px 8px;
+            min-height: 44px;
+            min-width: 44px;
+        }
+        .sidebar h3 {
+            font-size: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 500;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(3px);
+            padding: 16px;
+        }
+        .modal-overlay.open {
+            display: flex;
+        }
+        .modal-box {
+            background: white;
+            max-width: 680px;
+            width: 100%;
+            max-height: 92vh;
+            border-radius: var(--radius);
+            padding: 24px 28px;
+            overflow-y: auto;
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.15);
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.96) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        .modal-box h2 {
+            font-size: 20px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .modal-box .sub {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-bottom: 12px;
+        }
+
+        .modal-box .switch-group {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+            background: #f1f4f9;
+            padding: 4px;
+            border-radius: 30px;
+            width: fit-content;
+        }
+        .modal-box .switch-group button {
+            padding: 6px 20px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+            background: transparent;
+            color: var(--text-light);
+            min-height: 36px;
+        }
+        .modal-box .switch-group button.active-switch {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 16px rgba(79, 70, 229, 0.15);
+        }
+
+        .modal-box .layer {
+            border-left: 3px solid var(--primary);
+            padding-left: 12px;
+            margin-bottom: 14px;
+        }
+        .modal-box .layer .layer-title {
+            font-weight: 700;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .modal-box .layer .layer-title .ai-btn {
+            font-size: 11px;
+            padding: 2px 12px;
+            border-radius: 20px;
+            border: none;
+            background: #eef2ff;
+            color: var(--primary);
+            cursor: pointer;
+            transition: var(--transition);
+            min-height: 28px;
+        }
+        .modal-box .layer .layer-title .ai-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+        .modal-box .layer .layer-desc {
+            font-size: 12px;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+        .modal-box .layer input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            margin-top: 2px;
+            min-height: 40px;
+        }
+        .modal-box .layer input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.06);
+        }
+        .modal-box .layer .ai-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 6px;
+        }
+        .modal-box .layer .ai-suggestions .sug-tag {
+            background: #eef2ff;
+            color: var(--primary-dark);
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid #c7d2fe;
+        }
+        .modal-box .layer .ai-suggestions .sug-tag:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .modal-box .layer-group.hidden {
+            display: none;
+        }
+        .modal-box .btn-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .api-config {
+            background: #f8fafc;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            border: 1px solid var(--border);
+        }
+        .api-config select,
+        .api-config input {
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            font-size: 13px;
+            outline: none;
+            background: white;
+            min-height: 40px;
+            font-family: inherit;
+        }
+        .api-config select:focus,
+        .api-config input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.06);
+        }
+        .api-config select {
+            min-width: 130px;
+        }
+        .api-config input {
+            flex: 1;
+            min-width: 160px;
+        }
+        .api-config .status {
+            font-size: 12px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mt-12 {
+            margin-top: 12px;
+        }
+        .mb-8 {
+            margin-bottom: 8px;
+        }
+        .flex {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .text-muted {
+            color: var(--text-light);
+            font-size: 12px;
+        }
+        .text-center {
+            text-align: center;
+        }
+        .hidden {
+            display: none !important;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-light);
+            border-radius: 10px;
+        }
+
+        @media (max-width: 600px) {
+            .app {
+                padding: 12px 14px 20px;
+                border-radius: 12px;
+            }
+            .progress-step {
+                font-size: 10px;
+                min-width: 40px;
+                padding: 4px 2px;
+                min-height: 32px;
+            }
+            .progress-step i {
+                font-size: 10px;
+            }
+            .progress-step span {
+                display: none;
+            }
+            .archive-grid {
+                grid-template-columns: 1fr;
+            }
+            .asset-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .sidebar {
+                max-height: 70vh;
+                padding: 12px 16px 20px;
+                border-radius: 20px 20px 0 0;
+            }
+            .modal-box {
+                padding: 16px 18px;
+                max-height: 94vh;
+            }
+            .modal-box .switch-group {
+                width: 100%;
+                justify-content: center;
+            }
+            .modal-box .switch-group button {
+                flex: 1;
+                text-align: center;
+                font-size: 12px;
+                padding: 4px 12px;
+            }
+            .api-config select {
+                min-width: 100px;
+                font-size: 12px;
+            }
+            .api-config input {
+                min-width: 120px;
+                font-size: 12px;
+            }
+            .header-actions button {
+                font-size: 11px;
+                padding: 4px 10px;
+                min-height: 32px;
+            }
+            .btn {
+                font-size: 13px;
+                padding: 8px 16px;
+                min-height: 40px;
+            }
+            .panel-title {
+                font-size: 17px;
+            }
+            .stats-dashboard {
+                grid-template-columns: 1fr 1fr;
+            }
+            .sidebar-toggle {
+                width: 48px;
+                height: 48px;
+                font-size: 18px;
+                bottom: 16px;
+                right: 16px;
+            }
+        }
+        @media (max-width: 400px) {
+            .asset-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .modal-box .layer input {
+                font-size: 12px;
+                padding: 6px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app" id="app">
+        <!-- ===== Header ===== -->
+        <header class="app-header">
+            <div class="logo"><i class="fas fa-chess-board"></i> SOP 工作台</div>
+            <div class="header-actions">
+                <button onclick="openSettings()"><i class="fas fa-sliders-h"></i> 设置</button>
+                <button onclick="exportData()"><i class="fas fa-download"></i> 导出</button>
+                <button onclick="shareTeam()"><i class="fas fa-users"></i> 邀请</button>
+                <button class="danger" onclick="if(confirm('确定清空所有数据？')){localStorage.clear();location.reload();}"><i class="fas fa-trash"></i> 重置</button>
+            </div>
+        </header>
+
+        <!-- ===== API Config ===== -->
+        <div class="api-config" id="apiConfigBar">
+            <i class="fas fa-plug" style="color:var(--primary);"></i>
+            <select id="apiProviderSelect" onchange="onProviderChange()">
+                <option value="deepseek">DeepSeek</option>
+                <option value="openai">OpenAI</option>
+                <option value="zhipu">智谱 (GLM)</option>
+                <option value="qwen">通义千问</option>
+                <option value="ernie">文心一言</option>
+                <option value="claude">Claude</option>
+                <option value="gemini">Gemini</option>
+            </select>
+            <input type="password" id="apiKeyInput" placeholder="API Key" />
+            <button class="btn btn-sm btn-secondary" onclick="saveApiConfig()">保存</button>
+            <span class="status" id="apiStatus">⚪ 未配置</span>
+        </div>
+
+        <!-- ===== Progress ===== -->
+        <div class="progress-bar" id="progressBar">
+            <button class="progress-step active" data-step="0"><i class="fas fa-box"></i><span> 产品</span></button>
+            <button class="progress-step" data-step="1"><i class="fas fa-bullseye"></i><span> 平台</span></button>
+            <button class="progress-step" data-step="2"><i class="fas fa-pen"></i><span> 创作</span></button>
+            <button class="progress-step" data-step="3"><i class="fas fa-calendar"></i><span> 排期</span></button>
+            <button class="progress-step" data-step="4"><i class="fas fa-chart-line"></i><span> 复盘</span></button>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- STEP 0: 产品 -->
+        <!-- ============================================================ -->
+        <div class="panel active" data-step="0">
+            <div class="panel-title"><i class="fas fa-box" style="color:var(--primary);"></i> 产品分析</div>
+            <div class="panel-desc">填写产品基础信息，后续步骤会自动引用。</div>
+            <div class="card">
+                <div class="form-group"><label>产品名称 *</label><input id="pName" placeholder="例：智能保温杯" value="智能保温杯" /></div>
+                <div class="form-row">
+                    <div class="form-group"><label>产品类别</label>
+                        <select id="pCategory">
+                            <option>消费电子</option><option>家居生活</option><option>美妆护肤</option>
+                            <option>服饰鞋包</option><option>食品饮料</option><option>B2B设备</option>
+                            <option>软件服务</option><option>App/移动应用</option><option>其他</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>目标人群</label><input id="pAudience" placeholder="年龄/兴趣/痛点" value="25-35岁都市白领，注重便携和颜值" /></div>
+                </div>
+                <div class="form-group">
+                    <div class="flex-between">
+                        <label>核心卖点（逗号分隔）</label>
+                        <button class="btn btn-sm btn-primary" onclick="openSellingModal()"><i class="fas fa-wand-magic-sparkles"></i> 挖掘卖点</button>
+                    </div>
+                    <input id="pSelling" placeholder="12小时保温, 防摔, 轻便, 智能控温" value="12小时保温, 防摔, 轻便, 智能控温" />
+                </div>
+                <div class="form-group">
+                    <div class="flex-between">
+                        <label>竞品参考（可选）</label>
+                        <button class="btn btn-sm btn-secondary" onclick="openCompetitorModal()"><i class="fas fa-search"></i> 帮我找竞品</button>
+                    </div>
+                    <input id="pCompetitor" placeholder="账号名，用逗号分隔" value="Yeti, HydroFlask" />
+                </div>
+                <button class="btn btn-primary" onclick="saveProduct();goStep(1);"><i class="fas fa-arrow-right"></i> 保存 &amp; 下一步</button>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- STEP 1: 平台 -->
+        <!-- ============================================================ -->
+        <div class="panel" data-step="1">
+            <div class="panel-title"><i class="fas fa-bullseye" style="color:var(--primary);"></i> 平台策略</div>
+            <div class="panel-desc">选择发布平台、内容形式和内容方向。</div>
+            <div class="card">
+                <div class="form-group"><label>选择平台</label>
+                    <div class="tag-group" id="platformTags">
+                        <button class="tag-btn active" data-value="Instagram">📸 Instagram</button>
+                        <button class="tag-btn active" data-value="TikTok">🎵 TikTok</button>
+                        <button class="tag-btn" data-value="LinkedIn">💼 LinkedIn</button>
+                        <button class="tag-btn" data-value="Twitter">🐦 Twitter</button>
+                        <button class="tag-btn" data-value="YouTube">▶️ YouTube</button>
+                        <button class="tag-btn" data-value="Facebook">📘 Facebook</button>
+                        <button class="tag-btn" data-value="Pinterest">📌 Pinterest</button>
+                        <button class="tag-btn" data-value="Reddit">🤖 Reddit</button>
+                    </div>
+                </div>
+                <div class="form-group"><label>内容形式</label>
+                    <div class="tag-group" id="formatTags">
+                        <button class="tag-btn active" data-value="短视频">🎬 短视频</button>
+                        <button class="tag-btn active" data-value="图文">📝 图文</button>
+                        <button class="tag-btn" data-value="长视频">🎥 长视频</button>
+                    </div>
+                    <span class="text-muted" style="font-size:11px;">可多选，不同平台适配不同形式</span>
+                </div>
+                <div class="form-group"><label>内容类型</label>
+                    <div class="tag-group" id="contentTypeTags">
+                        <button class="tag-btn active" data-value="产品展示">📦 产品展示</button>
+                        <button class="tag-btn active" data-value="使用场景">🏞️ 使用场景</button>
+                        <button class="tag-btn" data-value="用户见证">💬 用户见证</button>
+                        <button class="tag-btn" data-value="品牌故事">📖 品牌故事</button>
+                        <button class="tag-btn" data-value="促销活动">🔥 促销活动</button>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>发布频率</label><select id="pFreq"><option value="low">每周 2-3 篇</option><option value="medium" selected>每周 4-5 篇</option><option value="high">每天 1 篇</option></select></div>
+                    <div class="form-group"><label>目标时区</label>
+                        <select id="pTimezone">
+                            <option value="EST">美东 (EST)</option>
+                            <option value="CST">美中 (CST)</option>
+                            <option value="PST">美西 (PST)</option>
+                            <option value="GMT">英国 (GMT)</option>
+                            <option value="CET">欧洲 (CET)</option>
+                            <option value="EET">东欧 (EET)</option>
+                            <option value="GST">阿联酋 (GST)</option>
+                            <option value="IST">印度 (IST)</option>
+                            <option value="CST_CN">中国 (CST)</option>
+                            <option value="JST">日本 (JST)</option>
+                            <option value="KST">韩国 (KST)</option>
+                            <option value="AEST">澳洲 (AEST)</option>
+                            <option value="NZST">新西兰 (NZST)</option>
+                            <option value="BRT">巴西 (BRT)</option>
+                            <option value="SAST">南非 (SAST)</option>
+                        </select>
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="saveStrategy();goStep(2);"><i class="fas fa-arrow-right"></i> 保存 &amp; 下一步</button>
+            </div>
+            <div class="card" style="background:#f0f4ff;">
+                <div class="card-title"><i class="fas fa-lightbulb"></i> 策略建议</div>
+                <div id="platformTips" style="font-size:13px; color:var(--text-light);">选择平台和内容形式后查看匹配建议</div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- STEP 2: 创作 -->
+        <!-- ============================================================ -->
+        <div class="panel" data-step="2">
+            <div class="panel-title"><i class="fas fa-pen" style="color:var(--primary);"></i> 内容创作</div>
+            <div class="panel-desc">撰写文案，系统自动评分并提供改进建议。</div>
+            <div class="card">
+                <div class="form-row">
+                    <div class="form-group"><label>内容类型</label><select id="cType"><option>产品展示</option><option>使用场景</option><option>用户见证</option><option>品牌故事</option><option>促销活动</option></select></div>
+                    <div class="form-group"><label>目标平台</label><select id="cPlatform"><option>Instagram</option><option>TikTok</option><option>LinkedIn</option><option>Twitter</option><option>YouTube</option><option>Facebook</option><option>Pinterest</option><option>Reddit</option></select></div>
+                </div>
+                <div class="form-group"><label>文案内容</label><textarea id="cContent" rows="4">Did you know that 80% of people check their phones within 5 minutes of waking up? Our smart mug keeps your coffee at the perfect temperature for 2 hours. No more cold coffee! Try it today and enjoy every sip. ☕️</textarea></div>
+                <div class="flex">
+                    <button class="btn btn-primary" onclick="analyzeContent()"><i class="fas fa-chart-simple"></i> 分析评分</button>
+                    <button class="btn btn-secondary" onclick="clearContent()"><i class="fas fa-undo-alt"></i> 清空</button>
+                    <button class="btn btn-secondary" id="aiSuggestBtn" onclick="fetchAISuggestions()"><i class="fas fa-robot"></i> AI 建议</button>
+                </div>
+            </div>
+
+            <div id="scoreResult" style="display:none;">
+                <div class="card">
+                    <div class="flex-between">
+                        <span class="card-title" style="margin:0;"><i class="fas fa-chart-pie"></i> 评分结果</span>
+                        <span id="scoreTotal" style="font-size:26px; font-weight:700; color:var(--primary);">0</span>
+                    </div>
+                    <div id="scoreBars" style="margin:8px 0;"></div>
+                    <div id="aiSuggestBox" style="margin-top:10px; background:#f0fdf4; border-radius:8px; padding:10px 14px; font-size:13px; border-left:3px solid var(--success); display:none;">
+                        <div class="flex-between">
+                            <strong>💡 AI 改进建议</strong>
+                            <button class="btn btn-sm btn-secondary" onclick="retryAISuggestions()"><i class="fas fa-redo"></i> 重试</button>
+                        </div>
+                        <div id="aiSuggestText" style="margin-top:4px; color:var(--text-light); white-space:pre-wrap;"></div>
+                        <div id="aiSuggestError" style="margin-top:4px; color:var(--danger); display:none;"></div>
+                    </div>
+                    <button class="btn btn-sm btn-success mt-8" onclick="saveContentVersion()"><i class="fas fa-save"></i> 保存此版本</button>
+                </div>
+                <div class="card">
+                    <div class="flex-between">
+                        <span class="card-title" style="margin:0;"><i class="fas fa-history"></i> 版本历史</span>
+                        <span class="text-muted" id="versionCount">0 个版本</span>
+                    </div>
+                    <div id="versionList" style="max-height:120px; overflow-y:auto; font-size:13px;"></div>
+                </div>
+                <button class="btn btn-primary" onclick="goStep(3);"><i class="fas fa-arrow-right"></i> 进入排期</button>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- STEP 3: 排期 -->
+        <!-- ============================================================ -->
+        <div class="panel" data-step="3">
+            <div class="panel-title"><i class="fas fa-calendar" style="color:var(--primary);"></i> 排期发布</div>
+            <div class="panel-desc">选择已保存的文案版本，排入内容日历。</div>
+            <div class="card">
+                <div class="form-row">
+                    <div class="form-group"><label>选择文案版本</label><select id="scheduleVersion"><option value="">— 请先在「创作」中保存版本 —</option></select></div>
+                    <div class="form-group"><label>发布日期</label><input type="date" id="scheduleDate" /></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>发布平台</label><select id="schedulePlatform"><option>Instagram</option><option>TikTok</option><option>LinkedIn</option><option>Twitter</option><option>YouTube</option><option>Facebook</option><option>Pinterest</option><option>Reddit</option></select></div>
+                    <div class="form-group" style="display:flex; align-items:flex-end;"><button class="btn btn-primary btn-block" onclick="addSchedule()"><i class="fas fa-plus"></i> 加入日历</button></div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="flex-between">
+                    <span class="card-title" style="margin:0;"><i class="fas fa-list"></i> 已排期内容</span>
+                    <span class="text-muted" id="scheduleCount">0 条</span>
+                </div>
+                <div id="scheduleList" style="max-height:200px; overflow-y:auto; font-size:13px;"></div>
+                <button class="btn btn-primary mt-8" onclick="goStep(4);"><i class="fas fa-arrow-right"></i> 进入复盘</button>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- STEP 4: 复盘 -->
+        <!-- ============================================================ -->
+        <div class="panel" data-step="4">
+            <div class="panel-title"><i class="fas fa-chart-line" style="color:var(--primary);"></i> 数据复盘 &amp; 发布档案</div>
+            <div class="panel-desc">记录已发布内容的数据，沉淀为可查询的档案。</div>
+
+            <div class="card">
+                <div class="card-title"><i class="fas fa-pen"></i> 录入发布数据</div>
+                <div class="form-row">
+                    <div class="form-group"><label>选择已排期内容</label><select id="archiveSelect"><option value="">— 请先排期 —</option></select></div>
+                    <div class="form-group"><label>发布日期</label><input type="date" id="archiveDate" /></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group"><label>曝光量</label><input type="number" id="archiveViews" placeholder="0" /></div>
+                    <div class="form-group"><label>互动量</label><input type="number" id="archiveEngage" placeholder="0" /></div>
+                    <div class="form-group"><label>转化量</label><input type="number" id="archiveConvert" placeholder="0" /></div>
+                </div>
+                <div class="form-group"><label>备注（可选）</label><input id="archiveNote" placeholder="记录你的观察..." /></div>
+                <button class="btn btn-success" onclick="addArchive()"><i class="fas fa-save"></i> 保存数据</button>
+            </div>
+
+            <div class="card">
+                <div class="card-title"><i class="fas fa-chart-simple"></i> 数据总览</div>
+                <div class="stats-dashboard" id="statsDashboard">
+                    <div class="stat-card"><div class="num" id="statTotal">0</div><div class="label">总发布</div></div>
+                    <div class="stat-card"><div class="num" id="statViews">0</div><div class="label">总曝光</div></div>
+                    <div class="stat-card"><div class="num" id="statEngage">0</div><div class="label">总互动</div></div>
+                    <div class="stat-card"><div class="num" id="statRate">0%</div><div class="label">平均互动率</div></div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="flex-between">
+                    <span class="card-title" style="margin:0;"><i class="fas fa-folder-open"></i> 发布档案</span>
+                    <div class="flex" style="gap:4px;">
+                        <button class="btn btn-sm btn-secondary" onclick="filterArchive('all')">全部</button>
+                        <button class="btn btn-sm btn-secondary" onclick="filterArchive('Instagram')">📸</button>
+                        <button class="btn btn-sm btn-secondary" onclick="filterArchive('TikTok')">🎵</button>
+                        <button class="btn btn-sm btn-secondary" onclick="filterArchive('LinkedIn')">💼</button>
+                    </div>
+                </div>
+                <div id="archiveList" class="archive-grid" style="max-height:320px;"></div>
+                <div class="empty-state" id="archiveEmpty"><i class="fas fa-inbox"></i> 暂无数据，录入第一条吧</div>
+            </div>
+        </div>
+
+        <!-- ===== 素材库 (底部抽屉) ===== -->
+        <button class="sidebar-toggle" onclick="toggleSidebar()"><i class="fas fa-folder-open"></i></button>
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+        <div class="sidebar" id="sidebar">
+            <div class="handle"></div>
+            <div class="flex-between">
+                <h3><i class="fas fa-boxes" style="color:var(--primary);"></i> 素材库</h3>
+                <button class="close-btn" onclick="toggleSidebar()"><i class="fas fa-times"></i></button>
+            </div>
+            <div style="display:flex; gap:4px; margin-bottom:10px; flex-wrap:wrap;">
+                <button class="btn btn-sm btn-secondary" onclick="filterAsset('all')">全部</button>
+                <button class="btn btn-sm btn-secondary" onclick="filterAsset('图片')">🖼️ 图片</button>
+                <button class="btn btn-sm btn-secondary" onclick="filterAsset('视频')">🎬 视频</button>
+                <button class="btn btn-sm btn-secondary" onclick="filterAsset('文案')">📝 文案</button>
+                <button class="btn btn-sm btn-secondary" onclick="filterAsset('数据')">📊 数据</button>
+            </div>
+            <div class="form-group" style="display:flex; gap:6px; flex-shrink:0;">
+                <input id="assetName" placeholder="素材名称" style="flex:1; min-height:40px;" />
+                <select id="assetType" style="width:80px; min-height:40px;"><option>图片</option><option>视频</option><option>文案</option><option>数据</option></select>
+                <button class="btn btn-primary btn-sm" onclick="addAsset()"><i class="fas fa-plus"></i></button>
+            </div>
+            <div id="assetList" class="asset-grid" style="flex:1; overflow-y:auto; padding-bottom:8px;"></div>
+            <div class="text-muted text-center" style="font-size:11px; flex-shrink:0; padding:4px 0;">点击素材可复制名称</div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 卖点挖掘弹窗 (带 AI 辅助) -->
+        <!-- ============================================================ -->
+        <div class="modal-overlay" id="sellingModal">
+            <div class="modal-box">
+                <h2><i class="fas fa-wand-magic-sparkles" style="color:var(--primary);"></i> 卖点挖掘助手</h2>
+                <div class="sub">按五层框架逐层填写，每层可点「🤖 AI 帮我填」获取建议</div>
+                <div class="switch-group" id="productTypeSwitch">
+                    <button class="active-switch" data-type="physical">📦 实体产品</button>
+                    <button data-type="digital">📱 虚拟产品</button>
+                </div>
+
+                <!-- 实体模板 -->
+                <div class="layer-group" id="physicalLayers">
+                    <div class="layer"><div class="layer-title">📦 功能卖点 <button class="ai-btn" onclick="aiFillLayer('physical','func')">🤖 AI 帮我填</button></div>
+                        <div class="layer-desc">产品本身能做什么？</div>
+                        <input id="s1a" placeholder="它解决什么问题？" /><input class="mt-8" id="s1b" placeholder="有哪些硬指标/规格？" style="margin-top:4px;" /><input class="mt-8" id="s1c" placeholder="用什么技术或材料？" style="margin-top:4px;" />
+                        <div class="ai-suggestions" id="sug_physical_func"></div>
+                    </div>
+                    <div class="layer"><div class="layer-title">🏞️ 场景卖点 <button class="ai-btn" onclick="aiFillLayer('physical','scene')">🤖 AI 帮我填</button></div>
+                        <div class="layer-desc">用户在什么场景下会需要它？</div>
+                        <input id="s2a" placeholder="什么时间/地点用？" /><input class="mt-8" id="s2b" placeholder="和谁一起用？" style="margin-top:4px;" /><input class="mt-8" id="s2c" placeholder="最爽的使用瞬间是什么？" style="margin-top:4px;" />
+                        <div class="ai-suggestions" id="sug_physical_scene"></div>
+                    </div>
+                    <div class="layer"><div class="layer-title">💎 情感卖点 <button class="ai-btn" onclick="aiFillLayer('physical','emotion')">🤖 AI 帮我填</button></div>
+                        <div class="layer-desc">用了它用户会有什么感觉？</div>
+                        <input id="s3a" placeholder="用这个产品的人是什么样的人？" /><input class="mt-8" id="s3b" placeholder="它带来什么安心感或仪式感？" style="margin-top:4px;" />
+                        <div class="ai-suggestions" id="sug_physical_emotion"></div>
+                    </div>
+                    <div class="layer"><div class="layer-title">🔥 差异化卖点 <button class="ai-btn" onclick="aiFillLayer('physical','diff')">🤖 AI 帮我填</button></div>
+                        <div class="layer-desc">凭什么选你不选别人？</div>
+                        <input id="s4a" placeholder="跟竞品比，哪个点最不一样？" />
+                        <div class="ai-suggestions" id="sug_physical_diff"></div>
+                    </div>
+                    <div class="layer"><div class="layer-title">📢 传播卖点 <button class="ai-btn" onclick="aiFillLayer('physical','spread')">🤖 AI 帮我填</button></div>
+                        <div class="layer-desc">用户会愿意分享它吗？为什么？</div>
+                        <input id="s5a" placeholder="哪个点让人想拍照/转发/讨论？" />
+                        <div class="ai-suggestions" id="sug_physical_spread"></div>
+                    </div>
+                </div>
+
+                <!-- 虚拟模板 -->
+                <div class="layer-group hidden" id="digitalLayers">
+                    <div class="layer"><div class="layer-title">📦 功能卖点 <button class="ai-btn" onclick="aiFillLayer('digital','func')">🤖 AI 帮我填</button></div>
+                        <div class="layer-desc">App/软件能解决什么？</div>
+                        <input id="d1a" placeholder="解决什么核心痛点？" /><input class="mt-8" id="d1b" placeholder="有哪些核心功能模块？" style="margin-top:4px;" /><input class="mt-8" id="d1c" placeholder="操作是否简单？跨平台/兼容性？" style="margin-top:4px;" />
+                        <div class="ai-suggestions" id="sug_digital_func"></div>
+                    </div>
+                    <div class="layer"><div class="layer-title">🏞️ 场景卖点 <button class="ai-btn" onclick="aiFillLayer('digital','scene')">🤖 AI 帮我填</button></div>
+                        <div class="layer-desc">用户在什么场景下打开它？</div>
+                        <input id="d2a" placeholder="什么场景下会打开？（通勤/工作/睡前）" /><input class="mt-8" id="d2b" placeholder="解决什么即时需求？" style="margin-top:4px;" /><input class="mt-8" id="d2c" placeholder="用户使用频率如何？" style="margin-top:4px;" />
+                        <div class="ai-suggestions" id="sug_digital_scene"></div>
+                    </div>
+                    <div class="layer"><div class="layer-title">💎 情感卖点 <button class="ai-btn" onclick="aiFillLayer('digital','emotion')">🤖 AI 帮我填</button></div>
+                        <div class="layer-desc">用了App用户会有什么感觉？</div>
+                        <input id="d3a" placeholder="用了它会感觉更高效/省心/专业？" /><input class="mt-8" id="d3b" placeholder="消除什么焦虑？（怕忘/怕错过/怕麻烦）" style="margin-top:4px;" />
+                        <div class="ai-suggestions" id="sug_digital_emotion"></div>
+                    </div>
+                    <div class="layer"><div class="layer-title">🔥 差异化卖点 <button class="ai-btn" onclick="aiFillLayer('digital','diff')">🤖 AI 帮我填</button></div>
+                        <div class="layer-desc">凭什么用你不下别的App？</div>
+                        <input id="d4a" placeholder="交互更简洁？功能独特？免费/低价？更新快？社区好？" />
+                        <div class="ai-suggestions" id="sug_digital_diff"></div>
+                    </div>
+                    <div class="layer"><div class="layer-title">📢 传播卖点 <button class="ai-btn" onclick="aiFillLayer('digital','spread')">🤖 AI 帮我填</button></div>
+                        <div class="layer-desc">用户为什么会分享它？</div>
+                        <input id="d5a" placeholder="哪个功能让人想截图发朋友圈？有没有「用了回不去」的体验？" />
+                        <div class="ai-suggestions" id="sug_digital_spread"></div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="closeSellingModal()">取消</button>
+                    <button class="btn btn-primary" onclick="applySellingPoints()"><i class="fas fa-check"></i> 汇总卖点</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- 竞品挖掘弹窗 (含「填入示例」按钮) -->
+        <!-- ============================================================ -->
+        <div class="modal-overlay" id="competitorModal">
+            <div class="modal-box">
+                <h2><i class="fas fa-search" style="color:var(--primary);"></i> 竞品挖掘助手</h2>
+                <div class="sub">回答几个问题，AI 帮你生成潜在竞品名单</div>
+                <div class="flex-between" style="margin-bottom:12px;">
+                    <span></span>
+                    <button class="btn btn-sm btn-secondary" onclick="fillCompetitorExample()"><i class="fas fa-upload"></i> 填入示例数据</button>
+                </div>
+                <div class="layer">
+                    <div class="layer-title">📌 你的产品</div>
+                    <div style="font-size:14px; font-weight:500;" id="compProductName">智能保温杯</div>
+                </div>
+                <div class="layer">
+                    <div class="layer-title">🔑 用户搜什么关键词能找到你？</div>
+                    <input id="compKeywords" placeholder="例：保温杯 便携 智能 办公" value="" />
+                </div>
+                <div class="layer">
+                    <div class="layer-title">📰 你关注的行业媒体/KOL</div>
+                    <input id="compMedia" placeholder="例：@techreview @designmilk" value="" />
+                </div>
+                <div class="layer">
+                    <div class="layer-title">👥 你的用户还关注哪些品牌？</div>
+                    <input id="compUserBrands" placeholder="例：Starbucks, Apple" value="" />
+                </div>
+                <div id="compResultArea" style="display:none; margin-top:12px; background:#f0fdf4; border-radius:8px; padding:12px; border-left:3px solid var(--success);">
+                    <strong>🔍 潜在竞品名单</strong>
+                    <div id="compResultText" style="margin-top:4px; font-size:13px; color:var(--text-light); white-space:pre-wrap;"></div>
+                    <button class="btn btn-sm btn-success mt-8" onclick="applyCompetitorResult()"><i class="fas fa-check"></i> 填入竞品参考</button>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="closeCompetitorModal()">取消</button>
+                    <button class="btn btn-primary" onclick="runCompetitorMining()"><i class="fas fa-robot"></i> 挖掘竞品</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 设置弹窗 ===== -->
+        <div class="modal-overlay" id="settingsModal">
+            <div class="modal-box">
+                <h2><i class="fas fa-sliders-h" style="color:var(--primary);"></i> 设置</h2>
+                <div class="sub">配置 AI 提供商、通知等</div>
+
+                <div class="form-group">
+                    <label>AI 提供商</label>
+                    <select id="settingsProvider" onchange="onSettingsProviderChange()">
+                        <option value="deepseek">DeepSeek</option>
+                        <option value="openai">OpenAI</option>
+                        <option value="zhipu">智谱 (GLM)</option>
+                        <option value="qwen">通义千问</option>
+                        <option value="ernie">文心一言</option>
+                        <option value="claude">Claude</option>
+                        <option value="gemini">Gemini</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>API Key</label>
+                    <input type="password" id="settingsApiKey" placeholder="输入你的 API Key" />
+                </div>
+                <div class="form-group">
+                    <label>模型</label>
+                    <select id="settingsModel"></select>
+                </div>
+                <div class="form-group">
+                    <label><input type="checkbox" id="settingsNotify" checked /> 启用排期提醒（浏览器通知）</label>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="closeSettings()">关闭</button>
+                    <button class="btn btn-primary" onclick="saveSettings()"><i class="fas fa-save"></i> 保存设置</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 团队邀请弹窗 ===== -->
+        <div class="modal-overlay" id="teamModal">
+            <div class="modal-box">
+                <h2><i class="fas fa-users" style="color:var(--primary);"></i> 邀请团队成员</h2>
+                <div class="sub">生成分享链接，团队成员打开即可同步数据</div>
+                <div class="card" style="background:#f8fafc;">
+                    <div style="font-size:13px; color:var(--text-light); word-break:break-all;" id="teamShareLink">点击下方生成链接</div>
+                    <button class="btn btn-primary mt-8 btn-block" onclick="generateTeamLink()"><i class="fas fa-link"></i> 生成分享链接</button>
+                </div>
+                <div class="text-muted text-center" style="font-size:12px; margin-top:8px;">⚠️ 链接包含当前数据，请勿公开分享</div>
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="closeTeamModal()">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ================================================================
+        // 全局状态
+        // ================================================================
+        const STORAGE_KEY = 'sopWorkbenchData';
+        let state = loadState();
+        let currentProductType = 'physical';
+        let currentScores = null;
+        let currentText = '';
+        let archiveFilter = 'all';
+        let assetFilter = 'all';
+
+        function defaultState() {
+            return {
+                product: { name: '智能保温杯', category: '消费电子', audience: '25-35岁都市白领，注重便携和颜值', selling: '12小时保温, 防摔, 轻便, 智能控温',
+                    competitor: 'Yeti, HydroFlask' },
+                strategy: { platforms: ['Instagram', 'TikTok'], formats: ['短视频', '图文'], contentTypes: ['产品展示', '使用场景'],
+                    frequency: 'medium', timezone: 'EST' },
+                contentVersions: [],
+                schedules: [],
+                archives: [],
+                assets: [],
+                currentStep: 0,
+                apiProvider: 'deepseek',
+                apiKey: '',
+                apiModel: 'deepseek-chat',
+                notifyEnabled: true,
+                teamId: ''
+            };
+        }
+
+        function loadState() {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    const def = defaultState();
+                    for (let key in def) { if (!(key in parsed)) parsed[key] = def[key]; }
+                    if (!parsed.strategy.formats) parsed.strategy.formats = ['短视频', '图文'];
+                    return parsed;
+                }
+            } catch (e) { console.warn('Load error', e); }
+            return defaultState();
+        }
+
+        function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {} }
+
+        // ================================================================
+        // AI 提供商配置
+        // ================================================================
+        const AI_PROVIDERS = {
+            deepseek: { label: 'DeepSeek', baseURL: 'https://api.deepseek.com/v1', models: ['deepseek-chat',
+                    'deepseek-coder'
+                ], default: 'deepseek-chat' },
+            openai: { label: 'OpenAI', baseURL: 'https://api.openai.com/v1', models: ['gpt-3.5-turbo', 'gpt-4',
+                    'gpt-4-turbo'
+                ], default: 'gpt-3.5-turbo' },
+            zhipu: { label: '智谱', baseURL: 'https://open.bigmodel.cn/api/paas/v4', models: ['glm-4', 'glm-3-turbo'],
+                default: 'glm-4' },
+            qwen: { label: '通义千问', baseURL: 'https://dashscope.aliyuncs.com/api/v1', models: ['qwen-max', 'qwen-plus',
+                    'qwen-turbo'
+                ], default: 'qwen-plus' },
+            ernie: { label: '文心一言', baseURL: 'https://aip.baidubce.com/rpc/2.0', models: ['ernie-3.5', 'ernie-4'],
+                default: 'ernie-3.5' },
+            claude: { label: 'Claude', baseURL: 'https://api.anthropic.com/v1', models: ['claude-3-opus',
+                    'claude-3-sonnet'
+                ], default: 'claude-3-sonnet' },
+            gemini: { label: 'Gemini', baseURL: 'https://generativelanguage.googleapis.com/v1', models: ['gemini-pro'],
+                default: 'gemini-pro' }
+        };
+
+        // ================================================================
+        // API 调用核心 (增强错误处理)
+        // ================================================================
+        async function callAI(messages, options = {}) {
+            const provider = state.apiProvider || 'deepseek';
+            const config = AI_PROVIDERS[provider];
+            if (!config) throw new Error('不支持的 AI 提供商');
+            const apiKey = state.apiKey;
+            if (!apiKey) throw new Error('请先配置 API Key');
+
+            const model = state.apiModel || config.default;
+            let url = config.baseURL;
+            let body = {};
+            let headers = { 'Content-Type': 'application/json' };
+
+            try {
+                // 根据不同提供商构建请求
+                if (provider === 'deepseek' || provider === 'openai' || provider === 'zhipu') {
+                    headers['Authorization'] = `Bearer ${apiKey}`;
+                    body = {
+                        model: model,
+                        messages: messages,
+                        temperature: options.temperature || 0.7,
+                        max_tokens: options.max_tokens || 500
+                    };
+                    if (provider === 'zhipu') {
+                        url = config.baseURL + '/chat/completions';
+                    } else {
+                        url = config.baseURL + '/chat/completions';
+                    }
+                } else if (provider === 'qwen') {
+                    headers['Authorization'] = `Bearer ${apiKey}`;
+                    body = {
+                        model: model,
+                        input: { messages: messages },
+                        parameters: { temperature: options.temperature || 0.7, max_tokens: options.max_tokens || 500 }
+                    };
+                    url = config.baseURL + '/services/aigc/text-generation/generation';
+                } else if (provider === 'ernie') {
+                    // 简化版：用 API Key 作为 client_id，secret 留空（需要用户提供完整配置）
+                    const tokenResp = await fetch(
+                        `https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=${apiKey}&client_secret=${options.secret || apiKey}`
+                        );
+                    const tkData = await tokenResp.json();
+                    if (!tkData.access_token) throw new Error('文心一言认证失败，请检查 API Key');
+                    url = config.baseURL + '/ai_custom/v1/wenxinworkshop/chat/' + model + '?access_token=' + tkData
+                        .access_token;
+                    body = {
+                        messages: messages,
+                        temperature: options.temperature || 0.7,
+                        max_output_tokens: options.max_tokens || 500
+                    };
+                } else if (provider === 'claude') {
+                    headers['x-api-key'] = apiKey;
+                    headers['anthropic-version'] = '2023-06-01';
+                    body = {
+                        model: model,
+                        messages: messages,
+                        temperature: options.temperature || 0.7,
+                        max_tokens: options.max_tokens || 500
+                    };
+                    url = config.baseURL + '/messages';
+                } else if (provider === 'gemini') {
+                    url = config.baseURL + `/models/${model}:generateContent?key=${apiKey}`;
+                    body = {
+                        contents: messages.map(m => ({ parts: [{ text: m.content }], role: m.role === 'assistant' ?
+                                'model' : 'user' }))
+                    };
+                }
+
+                const resp = await fetch(url, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(body)
+                });
+
+                if (!resp.ok) {
+                    const errText = await resp.text();
+                    throw new Error(`API 请求失败 (${resp.status}): ${errText.substring(0, 200)}`);
+                }
+
+                const data = await resp.json();
+
+                // 解析不同提供商的响应
+                if (provider === 'deepseek' || provider === 'openai' || provider === 'zhipu') {
+                    return data.choices[0].message.content;
+                } else if (provider === 'qwen') {
+                    return data.output.text;
+                } else if (provider === 'claude') {
+                    return data.content[0].text;
+                } else if (provider === 'gemini') {
+                    return data.candidates[0].content.parts[0].text;
+                } else if (provider === 'ernie') {
+                    return data.result;
+                }
+                return data.choices?.[0]?.message?.content || '无法解析响应';
+            } catch (error) {
+                console.error('AI 调用错误:', error);
+                throw error;
+            }
+        }
+
+        // ================================================================
+        // API 配置管理
+        // ================================================================
+        function onProviderChange() {
+            const sel = document.getElementById('apiProviderSelect');
+            state.apiProvider = sel.value;
+            const config = AI_PROVIDERS[state.apiProvider];
+            if (config) {
+                state.apiModel = config.default;
+                const modelSel = document.getElementById('settingsModel');
+                if (modelSel) {
+                    modelSel.innerHTML = config.models.map(m => `<option value="${m}">${m}</option>`).join('');
+                    modelSel.value = state.apiModel;
+                }
+            }
+            saveState();
+            updateApiStatus();
+        }
+
+        function saveApiConfig() {
+            const provider = document.getElementById('apiProviderSelect').value;
+            const key = document.getElementById('apiKeyInput').value.trim();
+            state.apiProvider = provider;
+            state.apiKey = key;
+            const config = AI_PROVIDERS[provider];
+            if (config) state.apiModel = config.default;
+            saveState();
+            updateApiStatus();
+            document.getElementById('settingsProvider').value = provider;
+            document.getElementById('settingsApiKey').value = key;
+            alert('API 配置已保存');
+        }
+
+        function updateApiStatus() {
+            const el = document.getElementById('apiStatus');
+            if (state.apiKey) {
+                el.textContent = `✅ ${AI_PROVIDERS[state.apiProvider]?.label || state.apiProvider} 已配置`;
+                el.style.color = 'var(--success)';
+            } else {
+                el.textContent = '⚪ 未配置';
+                el.style.color = 'var(--text-light)';
+            }
+        }
+
+        // ================================================================
+        // 设置弹窗
+        // ================================================================
+        function openSettings() {
+            document.getElementById('settingsModal').classList.add('open');
+            document.getElementById('settingsProvider').value = state.apiProvider || 'deepseek';
+            document.getElementById('settingsApiKey').value = state.apiKey || '';
+            document.getElementById('settingsNotify').checked = state.notifyEnabled !== false;
+            onSettingsProviderChange();
+        }
+
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('open');
+        }
+
+        function onSettingsProviderChange() {
+            const provider = document.getElementById('settingsProvider').value;
+            const config = AI_PROVIDERS[provider];
+            const sel = document.getElementById('settingsModel');
+            if (config) {
+                sel.innerHTML = config.models.map(m => `<option value="${m}">${m}</option>`).join('');
+                sel.value = state.apiModel || config.default;
+            }
+        }
+
+        function saveSettings() {
+            state.apiProvider = document.getElementById('settingsProvider').value;
+            state.apiKey = document.getElementById('settingsApiKey').value.trim();
+            state.apiModel = document.getElementById('settingsModel').value;
+            state.notifyEnabled = document.getElementById('settingsNotify').checked;
+            saveState();
+            document.getElementById('apiProviderSelect').value = state.apiProvider;
+            document.getElementById('apiKeyInput').value = state.apiKey;
+            updateApiStatus();
+            closeSettings();
+            alert('设置已保存');
+        }
+
+        document.getElementById('settingsModal').addEventListener('click', function(e) {
+            if (e.target === this) closeSettings();
+        });
+
+        // ================================================================
+        // 步骤导航
+        // ================================================================
+        function goStep(idx) {
+            state.currentStep = idx;
+            saveState();
+            document.querySelectorAll('.panel').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.progress-step').forEach(el => el.classList.remove('active', 'done'));
+            const panels = document.querySelectorAll('.panel');
+            const steps = document.querySelectorAll('.progress-step');
+            if (panels[idx]) panels[idx].classList.add('active');
+            steps.forEach((el, i) => {
+                if (i === idx) el.classList.add('active');
+                else if (i < idx) el.classList.add('done');
+            });
+            if (idx === 2) refreshContentStep();
+            if (idx === 3) refreshScheduleStep();
+            if (idx === 4) refreshArchiveStep();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        document.querySelectorAll('.progress-step').forEach((el, idx) => {
+            el.addEventListener('click', () => goStep(idx));
+        });
+
+        // ================================================================
+        // Step 0: 产品
+        // ================================================================
+        function saveProduct() {
+            state.product.name = document.getElementById('pName').value.trim() || '未命名产品';
+            state.product.category = document.getElementById('pCategory').value;
+            state.product.audience = document.getElementById('pAudience').value.trim();
+            state.product.selling = document.getElementById('pSelling').value.trim();
+            state.product.competitor = document.getElementById('pCompetitor').value.trim();
+            saveState();
+        }
+
+        // ================================================================
+        // 卖点挖掘弹窗
+        // ================================================================
+        function openSellingModal() {
+            document.getElementById('sellingModal').classList.add('open');
+            const existing = document.getElementById('pSelling').value.trim();
+            document.querySelectorAll('#sellingModal input').forEach(el => el.value = '');
+            document.querySelectorAll('.ai-suggestions').forEach(el => el.innerHTML = '');
+            if (existing) {
+                const parts = existing.split(',').map(s => s.trim()).filter(Boolean);
+                if (parts.length > 0) {
+                    document.getElementById('s1a').placeholder = '例: ' + parts[0];
+                    if (parts.length > 1) document.getElementById('s1b').placeholder = '例: ' + parts[1];
+                }
+            }
+            const cat = document.getElementById('pCategory').value;
+            const isDigital = cat === '软件服务' || cat === 'App/移动应用';
+            if (isDigital && currentProductType === 'physical') {
+                document.querySelectorAll('#productTypeSwitch button').forEach(b => b.classList.remove('active-switch'));
+                document.querySelector('#productTypeSwitch button[data-type="digital"]').classList.add('active-switch');
+                currentProductType = 'digital';
+                document.getElementById('physicalLayers').classList.add('hidden');
+                document.getElementById('digitalLayers').classList.remove('hidden');
+            } else if (!isDigital && currentProductType === 'digital') {
+                document.querySelectorAll('#productTypeSwitch button').forEach(b => b.classList.remove('active-switch'));
+                document.querySelector('#productTypeSwitch button[data-type="physical"]').classList.add('active-switch');
+                currentProductType = 'physical';
+                document.getElementById('physicalLayers').classList.remove('hidden');
+                document.getElementById('digitalLayers').classList.add('hidden');
+            }
+        }
+
+        function closeSellingModal() {
+            document.getElementById('sellingModal').classList.remove('open');
+        }
+
+        document.querySelectorAll('#productTypeSwitch button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('#productTypeSwitch button').forEach(b => b.classList.remove(
+                'active-switch'));
+                this.classList.add('active-switch');
+                currentProductType = this.dataset.type;
+                if (currentProductType === 'physical') {
+                    document.getElementById('physicalLayers').classList.remove('hidden');
+                    document.getElementById('digitalLayers').classList.add('hidden');
+                } else {
+                    document.getElementById('physicalLayers').classList.add('hidden');
+                    document.getElementById('digitalLayers').classList.remove('hidden');
+                }
+            });
+        });
+
+        async function aiFillLayer(type, layer) {
+            if (!state.apiKey) {
+                alert('请先在顶部配置 API Key');
+                return;
+            }
+            const productName = document.getElementById('pName').value.trim() || '产品';
+            const category = document.getElementById('pCategory').value || '其他';
+            const audience = document.getElementById('pAudience').value.trim() || '目标用户';
+
+            const layerMap = {
+                func: { label: '功能卖点', desc: '产品本身能做什么' },
+                scene: { label: '场景卖点', desc: '用户在什么场景使用' },
+                emotion: { label: '情感卖点', desc: '用户使用后的感受' },
+                diff: { label: '差异化卖点', desc: '与竞品的不同之处' },
+                spread: { label: '传播卖点', desc: '用户分享的理由' }
+            };
+            const info = layerMap[layer] || { label: layer, desc: '' };
+            const isDigital = type === 'digital';
+            const productTypeLabel = isDigital ? 'App/软件' : '实体产品';
+
+            const sugContainer = document.getElementById(`sug_${type}_${layer}`);
+            if (sugContainer) {
+                sugContainer.innerHTML = '<span style="font-size:12px;color:var(--text-light);">⏳ 生成中...</span>';
+            }
+
+            try {
+                const prompt = `
+                    产品名称: ${productName}
+                    产品类别: ${category}
+                    目标人群: ${audience}
+                    产品类型: ${productTypeLabel}
+                    请为"${info.label}"维度生成3-5条卖点建议（${info.desc}），
+                    每条用一句话表达，用换行分隔，不要编号，不要多余解释。
+                    如果是虚拟产品，侧重功能、场景、效率、情绪价值。
+                `;
+                const result = await callAI([
+                    { role: 'system', content: '你是资深营销文案专家，擅长挖掘产品卖点。' },
+                    { role: 'user', content: prompt }
+                ], { temperature: 0.8, max_tokens: 300 });
+
+                const suggestions = result.split('\n').filter(s => s.trim().length > 0);
+                if (sugContainer) {
+                    sugContainer.innerHTML = suggestions.map(s =>
+                        `<span class="sug-tag" onclick="fillSuggestion('${type}','${layer}',this)">${s.trim()}</span>`
+                    ).join('');
+                }
+            } catch (e) {
+                if (sugContainer) {
+                    sugContainer.innerHTML = `<span style="font-size:12px;color:var(--danger);">❌ ${e.message}</span>`;
+                }
+            }
+        }
+
+        function fillSuggestion(type, layer, el) {
+            const text = el.textContent;
+            const layerMap = {
+                func: ['a', 'b', 'c'],
+                scene: ['a', 'b', 'c'],
+                emotion: ['a', 'b'],
+                diff: ['a'],
+                spread: ['a']
+            };
+            const ids = layerMap[layer] || ['a'];
+            const prefix = type === 'physical' ? 's' : 'd';
+            for (let id of ids) {
+                const input = document.getElementById(`${prefix}${layer === 'func' ? '1' : layer === 'scene' ? '2' : layer ===
+                    'emotion' ? '3' : layer === 'diff' ? '4' : '5'}${id}`);
+                if (input && !input.value.trim()) {
+                    input.value = text;
+                    break;
+                }
+            }
+            const firstId =
+                `${prefix}${layer === 'func' ? '1' : layer === 'scene' ? '2' : layer === 'emotion' ? '3' : layer === 'diff' ? '4' : '5'}a`;
+            const firstInput = document.getElementById(firstId);
+            if (firstInput && !firstInput.value.trim()) {
+                firstInput.value = text;
+            }
+        }
+
+        function applySellingPoints() {
+            let points = [];
+            const prefix = currentProductType === 'physical' ? 's' : 'd';
+            const ids = currentProductType === 'physical' ?
+                ['s1a', 's1b', 's1c', 's2a', 's2b', 's2c', 's3a', 's3b', 's4a', 's5a'] :
+                ['d1a', 'd1b', 'd1c', 'd2a', 'd2b', 'd2c', 'd3a', 'd3b', 'd4a', 'd5a'];
+            ids.forEach(id => {
+                const val = document.getElementById(id).value.trim();
+                if (val) points.push(val);
+            });
+            if (points.length === 0) { alert('请至少填写一项内容'); return; }
+            document.getElementById('pSelling').value = points.join(', ');
+            closeSellingModal();
+            alert('✅ 卖点已汇总到输入框！');
+        }
+
+        document.getElementById('sellingModal').addEventListener('click', function(e) {
+            if (e.target === this) closeSellingModal();
+        });
+
+        // ================================================================
+        // 竞品挖掘 (含示例填充)
+        // ================================================================
+        function openCompetitorModal() {
+            document.getElementById('competitorModal').classList.add('open');
+            document.getElementById('compProductName').textContent = document.getElementById('pName').value.trim() ||
+            '未命名产品';
+            document.getElementById('compKeywords').value = '';
+            document.getElementById('compMedia').value = '';
+            document.getElementById('compUserBrands').value = '';
+            document.getElementById('compResultArea').style.display = 'none';
+        }
+
+        function closeCompetitorModal() {
+            document.getElementById('competitorModal').classList.remove('open');
+        }
+
+        function fillCompetitorExample() {
+            document.getElementById('compKeywords').value = '保温杯 便携 智能 办公';
+            document.getElementById('compMedia').value = '@techreview @designmilk @uncrate';
+            document.getElementById('compUserBrands').value = 'Starbucks, Apple, Muji';
+            alert('✅ 示例数据已填入，点击“挖掘竞品”即可体验');
+        }
+
+        async function runCompetitorMining() {
+            if (!state.apiKey) {
+                alert('请先配置 API Key');
+                return;
+            }
+            const productName = document.getElementById('pName').value.trim() || '未命名产品';
+            const keywords = document.getElementById('compKeywords').value.trim() || '相关产品';
+            const media = document.getElementById('compMedia').value.trim() || '行业媒体';
+            const userBrands = document.getElementById('compUserBrands').value.trim() || '用户关注品牌';
+
+            const area = document.getElementById('compResultArea');
+            const text = document.getElementById('compResultText');
+            area.style.display = 'block';
+            text.textContent = '⏳ 正在挖掘竞品...';
+
+            try {
+                const prompt = `
+                    产品: ${productName}
+                    关键词: ${keywords}
+                    行业媒体/KOL: ${media}
+                    用户关注品牌: ${userBrands}
+                    请根据以上信息，生成一份潜在竞品名单（5-8个品牌/产品），
+                    每个竞品用一行表示，格式为：品牌名 - 简要说明（为什么是竞品）
+                    只输出竞品列表，不要多余解释。
+                `;
+                const result = await callAI([
+                    { role: 'system', content: '你是市场分析专家，擅长竞品分析。' },
+                    { role: 'user', content: prompt }
+                ], { temperature: 0.7, max_tokens: 400 });
+
+                text.textContent = result;
+                window._competitorResult = result;
+            } catch (e) {
+                text.textContent = '❌ ' + e.message;
+            }
+        }
+
+        function applyCompetitorResult() {
+            const text = document.getElementById('compResultText').textContent;
+            if (text && !text.startsWith('❌') && !text.startsWith('⏳')) {
+                const lines = text.split('\n').filter(l => l.trim().length > 0);
+                const brands = lines.map(l => {
+                    const match = l.match(/^([^-–—]+)[-–—]/);
+                    return match ? match[1].trim() : l.substring(0, 20).trim();
+                }).filter(Boolean);
+                if (brands.length > 0) {
+                    document.getElementById('pCompetitor').value = brands.join(', ');
+                    closeCompetitorModal();
+                    alert('✅ 竞品已填入参考框！');
+                } else {
+                    alert('未能提取竞品名称，请手动填写');
+                }
+            } else {
+                alert('请先挖掘竞品');
+            }
+        }
+
+        document.getElementById('competitorModal').addEventListener('click', function(e) {
+            if (e.target === this) closeCompetitorModal();
+        });
+
+        // ================================================================
+        // Step 1: 平台策略
+        // ================================================================
+        function saveStrategy() {
+            const platformBtns = document.querySelectorAll('#platformTags .tag-btn.active');
+            state.strategy.platforms = Array.from(platformBtns).map(el => el.dataset.value);
+            const formatBtns = document.querySelectorAll('#formatTags .tag-btn.active');
+            state.strategy.formats = Array.from(formatBtns).map(el => el.dataset.value);
+            const typeBtns = document.querySelectorAll('#contentTypeTags .tag-btn.active');
+            state.strategy.contentTypes = Array.from(typeBtns).map(el => el.dataset.value);
+            state.strategy.frequency = document.getElementById('pFreq').value;
+            state.strategy.timezone = document.getElementById('pTimezone').value;
+            saveState();
+            updatePlatformTips();
+        }
+
+        function updatePlatformTips() {
+            const tips = {
+                'Instagram': '📸 视觉为主，建议 1:1 或 4:5 图片，Reels 短视频，标签 5-10 个。',
+                'TikTok': '🎵 竖屏 9:16，前 3 秒抓住注意力，热门音乐，标签 3-5 个。',
+                'LinkedIn': '💼 专业内容，图文并茂，长文深度分析，每周 2-3 篇。',
+                'Twitter': '🐦 短平快，280 字符内，话题标签 1-2 个，高频互动。',
+                'YouTube': '▶️ 长视频 5-15 分钟，标题含关键词，描述区放链接。',
+                'Facebook': '📘 混合内容，视频和图文并重，社群互动优先。',
+                'Pinterest': '📌 高清竖版图片，信息图，教程类内容表现好。',
+                'Reddit': '🤖 社区驱动，参与讨论，避免硬广，提供价值。'
+            };
+            const formatTips = {
+                '短视频': '🎬 15-60秒，前3秒抓人，竖屏为主',
+                '图文': '📝 3-5张图+文案，统一滤镜，讲故事',
+                '长视频': '🎥 3-15分钟，深度内容，横屏为主'
+            };
+            const sel = state.strategy.platforms || [];
+            const formats = state.strategy.formats || [];
+            const texts = sel.map(p => tips[p] || '').filter(Boolean);
+            const formatTexts = formats.map(f => formatTips[f] || '').filter(Boolean);
+            let msg = '';
+            if (sel.length > 0) msg += '📌 平台: ' + sel.join('、') + '\n';
+            if (formats.length > 0) msg += '🎬 形式: ' + formats.join('、') + '\n';
+            if (texts.length) msg += '\n💡 ' + texts.join(' ');
+            if (formatTexts.length) msg += '\n📐 ' + formatTexts.join(' ');
+            document.getElementById('platformTips').textContent = msg || '选择平台和内容形式后查看匹配建议';
+        }
+
+        document.querySelectorAll('#platformTags .tag-btn, #formatTags .tag-btn, #contentTypeTags .tag-btn').forEach(el => {
+            el.addEventListener('click', function() { this.classList.toggle('active'); });
+        });
+
+        // ================================================================
+        // Step 2: 内容创作 - 评分
+        // ================================================================
+        function analyzeContent() {
+            const text = document.getElementById('cContent').value.trim();
+            if (!text) { alert('请先输入文案'); return; }
+            currentText = text;
+            const scores = calcScores(text);
+            currentScores = scores;
+            displayScores(scores);
+            document.getElementById('scoreResult').style.display = 'block';
+            refreshVersionSelect();
+            document.getElementById('aiSuggestBox').style.display = 'none';
+        }
+
+        function calcScores(text) {
+            const len = text.length;
+            let lenScore = 0;
+            if (len >= 50 && len <= 280) lenScore = 100;
+            else if (len < 10) lenScore = 10;
+            else if (len < 50) lenScore = 20 + (len / 50) * 80;
+            else if (len > 280 && len <= 500) lenScore = 100 - ((len - 280) / 220) * 50;
+            else if (len > 500) lenScore = 50 - Math.min(40, (len - 500) / 50);
+            lenScore = Math.max(0, Math.min(100, lenScore));
+
+            const sentences = text.split(/[.!?。！？]+/).filter(s => s.trim().length > 0);
+            const words = text.split(/\s+/).filter(w => w.length > 0);
+            const avgLen = sentences.length > 0 ? words.length / sentences.length : 0;
+            let readScore = 0;
+            if (avgLen >= 12 && avgLen <= 16) readScore = 100;
+            else if (avgLen < 5) readScore = 30;
+            else if (avgLen < 12) readScore = 40 + (avgLen / 12) * 60;
+            else if (avgLen > 16 && avgLen <= 25) readScore = 100 - ((avgLen - 16) / 9) * 40;
+            else if (avgLen > 25) readScore = 60 - Math.min(40, (avgLen - 25) / 2);
+            readScore = Math.max(0, Math.min(100, readScore));
+
+            const first30 = text.substring(0, 30);
+            let hookScore = 0;
+            if (/[?？!！]/.test(first30)) hookScore += 50;
+            if (/\d/.test(first30)) hookScore += 30;
+            if (/^(Did|Do|Are|Is|Have|Has|What|Why|How|When|Where)/i.test(first30)) hookScore += 20;
+            hookScore = Math.min(100, hookScore);
+
+            const ctaWords = ['sign up', 'subscribe', 'click', 'buy', 'shop', 'link in bio', 'dm', 'try it', 'get it',
+                'order', 'download', 'learn more', 'discover', 'start', 'join'
+            ];
+            const lower = text.toLowerCase();
+            let found = 0;
+            ctaWords.forEach(k => { if (lower.includes(k)) found++; });
+            let ctaScore = Math.min(100, found * 25 + 10);
+            if (found === 0) ctaScore = 5;
+
+            const emojiRegex =
+                /[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu;
+            const emojis = text.match(emojiRegex) || [];
+            const emojiCount = emojis.length;
+            let emojiScore = 0;
+            if (emojiCount >= 2 && emojiCount <= 5) emojiScore = 100;
+            else if (emojiCount === 0) emojiScore = 10;
+            else if (emojiCount === 1) emojiScore = 50;
+            else if (emojiCount > 5 && emojiCount <= 10) emojiScore = 80 - (emojiCount - 5) * 5;
+            else if (emojiCount > 10) emojiScore = 30;
+            emojiScore = Math.max(0, Math.min(100, emojiScore));
+
+            const total = Math.round((lenScore + readScore + hookScore + ctaScore + emojiScore) / 5);
+            return { length: Math.round(lenScore), readability: Math.round(readScore), hook: Math.round(hookScore),
+                cta: Math.round(ctaScore), emoji: Math.round(emojiScore), total };
+        }
+
+        function displayScores(scores) {
+            document.getElementById('scoreTotal').textContent = scores.total;
+            const container = document.getElementById('scoreBars');
+            const items = [
+                { key: 'length', label: '📏 长度', value: scores.length },
+                { key: 'readability', label: '📖 可读性', value: scores.readability },
+                { key: 'hook', label: '🎯 钩子', value: scores.hook },
+                { key: 'cta', label: '📢 CTA', value: scores.cta },
+                { key: 'emoji', label: '😊 Emoji', value: scores.emoji }
+            ];
+            container.innerHTML = items.map(item => {
+                const pct = Math.min(100, item.value);
+                let cls = 'high';
+                if (pct < 50) cls = 'low';
+                else if (pct < 70) cls = 'mid';
+                return `
+                    <div class="score-bar-wrap">
+                        <div class="score-bar-label"><span>${item.label}</span><span>${item.value}分</span></div>
+                        <div class="score-bar-track"><div class="score-bar-fill ${cls}" style="width:${pct}%;"></div></div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function clearContent() {
+            document.getElementById('cContent').value = '';
+            document.getElementById('scoreResult').style.display = 'none';
+            currentScores = null;
+            currentText = '';
+        }
+
+        // ================================================================
+        // AI 建议 (增强错误处理 + 重试)
+        // ================================================================
+        let _lastAIPrompt = '';
+
+        async function fetchAISuggestions() {
+            const text = document.getElementById('cContent').value.trim();
+            if (!text) { alert('请先输入文案'); return; }
+            if (!state.apiKey) { alert('请先配置 API Key'); return; }
+            if (!currentScores || currentText !== text) analyzeContent();
+
+            const box = document.getElementById('aiSuggestBox');
+            const container = document.getElementById('aiSuggestText');
+            const errorEl = document.getElementById('aiSuggestError');
+            box.style.display = 'block';
+            container.textContent = '⏳ 正在调用 AI ...';
+            errorEl.style.display = 'none';
+            errorEl.textContent = '';
+
+            const platform = document.getElementById('cPlatform').value;
+            const type = document.getElementById('cType').value;
+            const prompt = `平台: ${platform}\n内容类型: ${type}\n文案: ${text}\n各维度评分: 长度${currentScores.length}分, 可读性${currentScores.readability}分, 钩子${currentScores.hook}分, CTA${currentScores.cta}分, Emoji${currentScores.emoji}分\n请给出3-5条具体改进建议。`;
+            _lastAIPrompt = prompt;
+
+            try {
+                const result = await callAI([
+                    { role: 'system', content: '你是海外社媒运营专家，擅长分析文案质量并给出具体改进建议。请用中文回复，建议要具体、可操作，每条建议不超过50字。' },
+                    { role: 'user', content: prompt }
+                ], { temperature: 0.7, max_tokens: 400 });
+                container.textContent = result;
+            } catch (e) {
+                container.textContent = '';
+                errorEl.style.display = 'block';
+                errorEl.textContent = '❌ ' + e.message;
+                console.error('AI 建议错误:', e);
+            }
+        }
+
+        function retryAISuggestions() {
+            if (_lastAIPrompt) {
+                fetchAISuggestions();
+            } else {
+                alert('请先点击 "AI 建议"');
+            }
+        }
+
+        // ================================================================
+        // 版本管理
+        // ================================================================
+        function saveContentVersion() {
+            const text = document.getElementById('cContent').value.trim();
+            if (!text) { alert('请先输入文案'); return; }
+            if (!currentScores || currentText !== text) analyzeContent();
+            const version = {
+                id: Date.now(),
+                text: text,
+                scores: currentScores || calcScores(text),
+                timestamp: new Date().toISOString(),
+                platform: document.getElementById('cPlatform').value,
+                type: document.getElementById('cType').value,
+                provider: state.apiProvider || 'local'
+            };
+            state.contentVersions.push(version);
+            saveState();
+            refreshVersionList();
+            refreshVersionSelect();
+            alert('版本已保存！');
+        }
+
+        function refreshVersionList() {
+            const container = document.getElementById('versionList');
+            const count = document.getElementById('versionCount');
+            const versions = state.contentVersions || [];
+            count.textContent = versions.length + ' 个版本';
+            if (versions.length === 0) { container.innerHTML = '<span class="text-muted">暂无版本</span>'; return; }
+            container.innerHTML = versions.slice().reverse().slice(0, 10).map(v => `
+                <div style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px solid #f1f4f9; font-size:12px;">
+                    <span style="cursor:pointer;" onclick="loadVersion(${v.id})">${v.text.substring(0, 40)}${v.text.length>40?'...':''}</span>
+                    <span style="color:var(--primary);font-weight:600;">${v.scores.total}分</span>
+                </div>
+            `).join('');
+        }
+
+        function loadVersion(id) {
+            const v = state.contentVersions.find(x => x.id === id);
+            if (v) {
+                document.getElementById('cContent').value = v.text;
+                document.getElementById('cType').value = v.type || '产品展示';
+                document.getElementById('cPlatform').value = v.platform || 'Instagram';
+                analyzeContent();
+                document.getElementById('scoreResult').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        function refreshVersionSelect() {
+            const sel = document.getElementById('scheduleVersion');
+            const versions = state.contentVersions || [];
+            sel.innerHTML = '<option value="">— 选择版本 —</option>' +
+                versions.map(v => `<option value="${v.id}">${v.text.substring(0, 40)}${v.text.length>40?'...':''} (${v.scores.total}分)</option>`)
+                .join('');
+        }
+
+        function refreshContentStep() {
+            refreshVersionList();
+            refreshVersionSelect();
+        }
+
+        // ================================================================
+        // Step 3: 排期 + 提醒
+        // ================================================================
+        function addSchedule() {
+            const sel = document.getElementById('scheduleVersion');
+            const id = parseInt(sel.value);
+            if (!id) { alert('请先选择文案版本'); return; }
+            const version = state.contentVersions.find(v => v.id === id);
+            if (!version) { alert('版本不存在'); return; }
+            const date = document.getElementById('scheduleDate').value || new Date().toISOString().split('T')[0];
+            const platform = document.getElementById('schedulePlatform').value;
+            state.schedules.push({
+                id: Date.now(),
+                versionId: id,
+                text: version.text,
+                platform: platform,
+                date: date,
+                scores: version.scores
+            });
+            saveState();
+            refreshScheduleStep();
+            alert('已加入日历！');
+            if (state.notifyEnabled && Notification.permission === 'granted') {
+                new Notification('📅 已加入排期', {
+                    body: `${date} 发布到 ${platform}`,
+                    icon: '📅'
+                });
+            }
+        }
+
+        function refreshScheduleStep() {
+            const container = document.getElementById('scheduleList');
+            const count = document.getElementById('scheduleCount');
+            const list = state.schedules || [];
+            count.textContent = list.length + ' 条';
+            if (list.length === 0) { container.innerHTML = '<span class="text-muted">暂无排期</span>'; return; }
+            container.innerHTML = list.slice().reverse().map(s => `
+                <div style="display:flex; justify-content:space-between; padding:6px 0; border-bottom:1px solid #f1f4f9; font-size:13px; align-items:center;">
+                    <span>📅 ${s.date} · ${s.platform}</span>
+                    <span style="color:var(--text-light);">${s.text.substring(0, 25)}${s.text.length>25?'...':''}</span>
+                    <button class="btn btn-sm btn-danger" onclick="removeSchedule(${s.id})"><i class="fas fa-times"></i></button>
+                </div>
+            `).join('');
+
+            const archiveSel = document.getElementById('archiveSelect');
+            archiveSel.innerHTML = '<option value="">— 选择 —</option>' +
+                list.map(s => `<option value="${s.id}">${s.date} · ${s.platform} · ${s.text.substring(0, 25)}</option>`)
+                .join('');
+            if (!document.getElementById('archiveDate').value) {
+                document.getElementById('archiveDate').value = new Date().toISOString().split('T')[0];
+            }
+            checkDailySchedule();
+        }
+
+        function removeSchedule(id) {
+            state.schedules = state.schedules.filter(s => s.id !== id);
+            saveState();
+            refreshScheduleStep();
+        }
+
+        function checkDailySchedule() {
+            if (!state.notifyEnabled) return;
+            if (Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+            const today = new Date().toISOString().split('T')[0];
+            const todaySchedules = (state.schedules || []).filter(s => s.date === today);
+            if (todaySchedules.length > 0 && Notification.permission === 'granted') {
+                new Notification('📅 今日有排期内容！', {
+                    body: `今天有 ${todaySchedules.length} 条内容待发布`,
+                });
+            }
+        }
+        setInterval(checkDailySchedule, 60 * 60 * 1000);
+
+        // ================================================================
+        // Step 4: 归档
+        // ================================================================
+        function addArchive() {
+            const sel = document.getElementById('archiveSelect');
+            const scheduleId = parseInt(sel.value);
+            if (!scheduleId) { alert('请选择已排期内容'); return; }
+            const schedule = state.schedules.find(s => s.id === scheduleId);
+            if (!schedule) { alert('排期不存在'); return; }
+            const views = parseInt(document.getElementById('archiveViews').value) || 0;
+            const engage = parseInt(document.getElementById('archiveEngage').value) || 0;
+            const convert = parseInt(document.getElementById('archiveConvert').value) || 0;
+            const note = document.getElementById('archiveNote').value.trim();
+            const date = document.getElementById('archiveDate').value || new Date().toISOString().split('T')[0];
+            state.archives.push({
+                id: Date.now(),
+                scheduleId: scheduleId,
+                text: schedule.text,
+                platform: schedule.platform,
+                date: date,
+                views: views,
+                engage: engage,
+                convert: convert,
+                note: note,
+                scores: schedule.scores || {}
+            });
+            saveState();
+            refreshArchiveStep();
+            document.getElementById('archiveViews').value = '';
+            document.getElementById('archiveEngage').value = '';
+            document.getElementById('archiveConvert').value = '';
+            document.getElementById('archiveNote').value = '';
+            alert('数据已保存！');
+        }
+
+        function filterArchive(platform) { archiveFilter = platform;
+            renderArchiveList(); }
+
+        function renderArchiveList() {
+            const container = document.getElementById('archiveList');
+            const empty = document.getElementById('archiveEmpty');
+            let list = state.archives || [];
+            if (archiveFilter !== 'all') list = list.filter(a => a.platform === archiveFilter);
+            if (list.length === 0) { container.innerHTML = '';
+                empty.style.display = 'block'; return; }
+            empty.style.display = 'none';
+            container.innerHTML = list.slice().reverse().map(a => `
+                <div class="archive-item">
+                    <div class="head"><span class="platform">${a.platform}</span><span class="date">${a.date}</span></div>
+                    <div class="text">${a.text.substring(0, 50)}${a.text.length>50?'...':''}</div>
+                    <div class="stats">
+                        <span>👁️ ${a.views}</span><span>❤️ ${a.engage}</span><span>📈 ${a.convert}</span>
+                        ${a.note ? `<span style="color:var(--text-light);">📝 ${a.note}</span>` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function refreshArchiveStep() {
+            const list = state.archives || [];
+            const total = list.length;
+            const views = list.reduce((s, a) => s + a.views, 0);
+            const engage = list.reduce((s, a) => s + a.engage, 0);
+            const rate = views > 0 ? Math.round((engage / views) * 100) : 0;
+            document.getElementById('statTotal').textContent = total;
+            document.getElementById('statViews').textContent = views;
+            document.getElementById('statEngage').textContent = engage;
+            document.getElementById('statRate').textContent = rate + '%';
+            renderArchiveList();
+            refreshScheduleStep();
+        }
+
+        // ================================================================
+        // 素材库 (底部抽屉)
+        // ================================================================
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('open');
+            overlay.classList.toggle('open');
+            if (sidebar.classList.contains('open')) renderAssetList();
+        }
+
+        function addAsset() {
+            const name = document.getElementById('assetName').value.trim();
+            const type = document.getElementById('assetType').value;
+            if (!name) { alert('请输入素材名称'); return; }
+            state.assets.push({ id: Date.now(), name, type, timestamp: new Date().toISOString() });
+            saveState();
+            document.getElementById('assetName').value = '';
+            renderAssetList();
+        }
+
+        function filterAsset(type) { assetFilter = type;
+            renderAssetList(); }
+
+        function renderAssetList() {
+            const container = document.getElementById('assetList');
+            let list = state.assets || [];
+            if (assetFilter !== 'all') list = list.filter(a => a.type === assetFilter);
+            if (list.length === 0) {
+                container.innerHTML = '<div class="empty-state" style="padding:12px 0;"><i class="fas fa-box-open"></i> 暂无素材</div>';
+                return;
+            }
+            container.innerHTML = list.slice().reverse().map(a => `
+                <div class="asset-card" onclick="copyAsset('${a.name}')">
+                    <div class="icon">${a.type === '图片' ? '🖼️' : a.type === '视频' ? '🎬' : a.type === '文案' ? '📝' : '📊'}</div>
+                    <div class="name">${a.name}</div>
+                    <div class="meta">${a.type} · ${new Date(a.timestamp).toLocaleDateString()}</div>
+                </div>
+            `).join('');
+        }
+
+        function copyAsset(name) {
+            navigator.clipboard.writeText(name).then(() => alert('已复制: ' + name)).catch(() => prompt('手动复制:', name));
+        }
+
+        // ================================================================
+        // 团队邀请
+        // ================================================================
+        function shareTeam() {
+            document.getElementById('teamModal').classList.add('open');
+            document.getElementById('teamShareLink').textContent = '点击下方生成分享链接';
+        }
+
+        function closeTeamModal() {
+            document.getElementById('teamModal').classList.remove('open');
+        }
+
+        function generateTeamLink() {
+            const data = JSON.stringify(state);
+            const encoded = btoa(encodeURIComponent(data));
+            const url = window.location.href.split('?')[0];
+            const shareUrl = url + '?team=' + encoded;
+            document.getElementById('teamShareLink').textContent = shareUrl;
+            navigator.clipboard.writeText(shareUrl).then(() => {
+                alert('链接已复制！分享给团队成员即可同步数据。');
+            }).catch(() => {
+                const input = document.createElement('input');
+                input.value = shareUrl;
+                document.body.appendChild(input);
+                input.select();
+                document.execCommand('copy');
+                document.body.removeChild(input);
+                alert('链接已复制！');
+            });
+        }
+
+        (function checkTeamLink() {
+            const params = new URLSearchParams(window.location.search);
+            const teamData = params.get('team');
+            if (teamData) {
+                try {
+                    const decoded = decodeURIComponent(atob(teamData));
+                    const data = JSON.parse(decoded);
+                    const def = defaultState();
+                    for (let key in def) {
+                        if (data[key] !== undefined) {
+                            state[key] = data[key];
+                        }
+                    }
+                    saveState();
+                    location.href = location.pathname;
+                    alert('✅ 已加载团队数据！');
+                } catch (e) { console.warn('团队链接解析失败', e); }
+            }
+        })();
+
+        document.getElementById('teamModal').addEventListener('click', function(e) {
+            if (e.target === this) closeTeamModal();
+        });
+
+        // ================================================================
+        // 导出
+        // ================================================================
+        function exportData() {
+            const data = JSON.stringify(state, null, 2);
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `sop_workbench_${new Date().toISOString().split('T')[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        // ================================================================
+        // 初始化
+        // ================================================================
+        function init() {
+            document.getElementById('pName').value = state.product.name || '';
+            document.getElementById('pCategory').value = state.product.category || '消费电子';
+            document.getElementById('pAudience').value = state.product.audience || '';
+            document.getElementById('pSelling').value = state.product.selling || '';
+            document.getElementById('pCompetitor').value = state.product.competitor || '';
+
+            document.querySelectorAll('#platformTags .tag-btn').forEach(el => {
+                el.classList.toggle('active', (state.strategy.platforms || []).includes(el.dataset.value));
+            });
+            document.querySelectorAll('#formatTags .tag-btn').forEach(el => {
+                el.classList.toggle('active', (state.strategy.formats || ['短视频', '图文']).includes(el.dataset
+                .value));
+            });
+            document.querySelectorAll('#contentTypeTags .tag-btn').forEach(el => {
+                el.classList.toggle('active', (state.strategy.contentTypes || []).includes(el.dataset.value));
+            });
+            document.getElementById('pFreq').value = state.strategy.frequency || 'medium';
+            document.getElementById('pTimezone').value = state.strategy.timezone || 'EST';
+
+            document.getElementById('apiProviderSelect').value = state.apiProvider || 'deepseek';
+            document.getElementById('apiKeyInput').value = state.apiKey || '';
+            onProviderChange();
+            updateApiStatus();
+
+            if (!document.getElementById('scheduleDate').value) {
+                document.getElementById('scheduleDate').value = new Date().toISOString().split('T')[0];
+            }
+            if (!document.getElementById('archiveDate').value) {
+                document.getElementById('archiveDate').value = new Date().toISOString().split('T')[0];
+            }
+
+            updatePlatformTips();
+            refreshVersionList();
+            refreshVersionSelect();
+            refreshScheduleStep();
+            refreshArchiveStep();
+            renderAssetList();
+
+            if (state.notifyEnabled && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+
+            const step = state.currentStep || 0;
+            goStep(step);
+        }
+
+        init();
+        console.log('✅ SOP 工作台完整版已加载 (时区15个 · 竞品示例 · AI错误增强)');
+    </script>
+</body>
+</html>
